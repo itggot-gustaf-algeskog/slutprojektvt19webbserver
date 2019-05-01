@@ -15,9 +15,15 @@ html lang="en"
                     button type="submit" 
                         img src="../img/magnifying-glass.png"
                 
-            div class="kundvagn"    
-                a href="/kundvagn" 
-                    img src="../img/shopping-cart.png"
+            div class="kundvagn"
+                - if session[:id] != nil
+                    - user_info.each do |id|    
+                        a href="/kundvagn/#{id["Id"]}" 
+                            img src="../img/shopping-cart.png"
+                - else
+                    a href="/kundvagn" 
+                        img src="../img/shopping-cart.png"
+
             
             div class="go_home_button"
                 button

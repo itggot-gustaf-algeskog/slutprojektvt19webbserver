@@ -5,6 +5,13 @@ def get_products
     session[:products] = db.execute("SELECT Name,Description,Rating,Price,Productid FROM products")
 end
 
+def user_info
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    session[:user_info] = db.execute("SELECT Id FROM users WHERE Name = (?)",session[:username])
+end
+
 def inloggning
     db = SQLite3::Database.new('db/shop.db')
     db.results_as_hash = true

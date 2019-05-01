@@ -7,10 +7,11 @@ require_relative 'functions.rb'
 
 before('/') do
     get_products
+    user_info
 end
 
 get('/') do
-    slim(:index, locals:{ products: session[:products]})
+    slim(:index, locals:{ products: session[:products], user_info: session[:user_info]})
 end
 
 get('/login') do
@@ -41,6 +42,10 @@ post('/registrering') do
     redirect('/')
 end
 
+before('/produktsida/:id') do
+    get_products
+end
+
 get('/produktsida/:id') do
-    slim(:produktsida)
+    slim(:produktsida, locals:{ products: session[:products]})
 end
