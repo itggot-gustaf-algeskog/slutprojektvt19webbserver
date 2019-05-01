@@ -40,3 +40,7 @@ end
 post('/registrering') do    
     redirect('/')
 end
+
+get('/produktsida/:id') do
+    slim(:produktsida)
+end

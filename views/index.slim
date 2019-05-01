@@ -1,5 +1,5 @@
 
 div class="products"
     - products.each do |product|
-        h3 = product[0]
+        a href="/produktsida/#{product["Productid"]}" = product[0]
         h3 = product[1]
