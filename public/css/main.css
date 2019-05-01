@@ -71,3 +71,19 @@ header .search_bar{
     padding-top: 8px;
     padding-bottom: 2px;
 }
+
+.login_page_h1{
+    grid-row: 2/3;
+    grid-column: 1/2;
+    text-align: left;
+}
+
+.inloggning{
+    grid-row: 3/4;
+    grid-column: 1/2;
+}
+
+.registrering_knapp{
+    grid-row: 4/5;
+    grid-column: 1/2;
+}
