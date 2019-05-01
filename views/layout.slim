@@ -7,7 +7,27 @@ html lang="en"
         title Webshop
         link rel="stylesheet" href="css/main.css"/
     body
-        div class="go_home_button"
-            button
-                a href="/" Go home
+        header
+
+            div class="search_bar" 
+                form action="/"
+                    input type="text" placeholder="Search.." name="search"
+                    button type="submit" 
+                        img src="img/magnifying-glass.png"
+                
+            div class="kundvagn"    
+                a href="/kundvagn" 
+                    img src="img/shopping-cart.png"
+            
+            div class="go_home_button"
+                button
+                    a href="/" Go home
+            
+            - if session[:id] != nil
+                div class="user"
+                    a href="/profile" #{session[:username]}
+            - else
+                div class="login"
+                    a href="/login" Login
+                    
         == yield
