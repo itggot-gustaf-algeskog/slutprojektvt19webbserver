@@ -124,14 +124,14 @@ header .search_bar{
     grid-row: 5/6;
 }
 
-.länk_startsida{
+.startsida_produkter{
     grid-column: span 1;
     border-style: solid;
     border-top: none;
     border-left: none;
 }
 
-.länk_startsida a{
+.startsida_produkter a{
     color: black;
     font-size: 20px;
 }
@@ -150,4 +150,16 @@ header .search_bar{
 
 .img_profile{
     align-self: center;
+}
+
+.search_result_products{
+    grid-column: span 1;
+    border-style: solid;
+    border-top: none;
+    border-left: none;
+}
+
+.search_result_products a{
+    color: black;
+    font-size: 20px;
 }

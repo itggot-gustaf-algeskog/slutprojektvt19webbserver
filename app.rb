@@ -102,3 +102,10 @@ end
 get('/profile') do
     slim(:profile, locals:{ profiles: session[:profiles]})
 end
+
+post('/logout') do
+    session[:username] = nil
+    session[:password] = nil
+    session[:id] = nil
+    redirect('/')
+end

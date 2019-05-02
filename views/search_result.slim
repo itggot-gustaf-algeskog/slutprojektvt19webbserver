@@ -1,6 +1,7 @@
 - if session[:results] != []
-    div class="products"
+    div class="search_result_products"
         - results.each do |result|
+            img src="../img/produkter_startsida.jpg"
             a href="/produktsida/#{result["Productid"]}" = result[0]
             h3 = result[1]
 - else
