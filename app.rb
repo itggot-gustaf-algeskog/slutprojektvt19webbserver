@@ -94,3 +94,11 @@ end
 get('/rating_error') do
     slim(:rating_error)
 end
+
+before('/profile') do
+    profiles
+end
+
+get('/profile') do
+    slim(:profile, locals:{ profiles: session[:profiles]})
+end

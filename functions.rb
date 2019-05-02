@@ -75,7 +75,7 @@ end
 def thumbs_up
     db = SQLite3::Database.new('db/shop.db')
     db.results_as_hash = true
-    
+
     rating = db.execute("SELECT Rating FROM products WHERE Productid = (?)",session[:produktid])
     
     new_rating = rating[0][0] + 1
@@ -92,4 +92,11 @@ def thumbs_down
     new_rating = rating[0][0] - 1
 
     db.execute("UPDATE products SET Rating = (?) WHERE Productid = (?)",new_rating,session[:produktid])
+end
+
+def profiles
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    session[:profiles] = db.execute("SELECT Profiledescription,Item,Interest,Username FROM profiles WHERE Username = (?)",session[:username])
 end
