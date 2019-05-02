@@ -1,0 +1,7 @@
+- if session[:results] != []
+    div class="products"
+        - results.each do |result|
+            a href="/produktsida/#{result["Productid"]}" = result[0]
+            h3 = result[1]
+- else
+    h3 Could not find any products with that name

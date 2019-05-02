@@ -55,3 +55,14 @@ def registrering
         db.execute("INSERT INTO profiles (Profiledescription,Item,Interest,Username) VALUES (?,?,?,?)","hej","hej","hej",session[:new_username])
     end
 end
+
+
+
+def search
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    session[:search] = params["search"].capitalize
+
+    session[:results] = db.execute("SELECT Name,Description,Rating,Price,Productid FROM products WHERE Name = (?)",session[:search])
+end

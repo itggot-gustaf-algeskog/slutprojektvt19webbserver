@@ -49,3 +49,15 @@ end
 get('/produktsida/:id') do
     slim(:produktsida, locals:{ products: session[:products]})
 end
+
+before('/search') do
+    search
+end
+
+post('/search') do
+    redirect('/search_result')
+end
+
+get('/search_result') do
+    slim(:search_result, locals:{ results: session[:results]})
+end
