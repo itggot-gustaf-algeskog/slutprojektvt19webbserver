@@ -43,11 +43,12 @@ post('/registrering') do
 end
 
 before('/produktsida/:id') do
-    get_products
+    session[:produktid] = params["id"]
+    produktsida
 end
 
 get('/produktsida/:id') do
-    slim(:produktsida, locals:{ products: session[:products]})
+    slim(:produktsida, locals:{ produktsida: session[:produktsida]})
 end
 
 before('/search') do

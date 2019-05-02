@@ -56,7 +56,12 @@ def registrering
     end
 end
 
+def produktsida
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
 
+    session[:produktsida] = db.execute("SELECT Name,Description,Rating,Price,Productid FROM products WHERE Productid = (?)",session[:produktid])
+end
 
 def search
     db = SQLite3::Database.new('db/shop.db')
