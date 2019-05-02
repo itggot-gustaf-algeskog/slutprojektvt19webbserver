@@ -71,7 +71,7 @@ end
 
 post('/thumbs_up') do
     if session[:id] != nil
-        redirect('/')
+        redirect back
     else
         redirect('/rating_error')
     end
@@ -85,7 +85,7 @@ end
 
 post('/thumbs_down') do
     if session[:id] != nil
-        redirect('/')
+        redirect back
     else
         redirect('/rating_error')
     end
