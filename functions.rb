@@ -71,3 +71,25 @@ def search
 
     session[:results] = db.execute("SELECT Name,Description,Rating,Price,Productid FROM products WHERE Name = (?)",session[:search])
 end
+
+def thumbs_up
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+    
+    rating = db.execute("SELECT Rating FROM products WHERE Productid = (?)",session[:produktid])
+    
+    new_rating = rating[0][0] + 1
+
+    db.execute("UPDATE products SET Rating = (?) WHERE Productid = (?)",new_rating,session[:produktid])
+end
+
+def thumbs_down
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    rating = db.execute("SELECT Rating FROM products WHERE Productid = (?)",session[:produktid])
+    
+    new_rating = rating[0][0] - 1
+
+    db.execute("UPDATE products SET Rating = (?) WHERE Productid = (?)",new_rating,session[:produktid])
+end

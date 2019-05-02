@@ -11,4 +11,14 @@ div class="bild_produktsida"
     div class="produktpris"
         h3 Pris:   
         h3 = product[3]
-        
+
+    
+div class="thumbs"  
+    h3 Rate this product:
+    form action="/thumbs_up" method="post"
+        button type="submit" 
+            img src="../img/thumbs_up1.png"
+
+    form action="/thumbs_down" method="post"
+        button type="submit"
+            img src="../img/thumbs_down1.png"

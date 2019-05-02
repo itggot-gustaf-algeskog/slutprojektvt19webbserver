@@ -62,3 +62,35 @@ end
 get('/search_result') do
     slim(:search_result, locals:{ results: session[:results]})
 end
+
+before('/thumbs_up') do
+    if session[:id] != nil
+        thumbs_up
+    end
+end
+
+post('/thumbs_up') do
+    if session[:id] != nil
+        redirect('/')
+    else
+        redirect('/rating_error')
+    end
+end
+
+before('/thumbs_down') do
+    if session[:id] != nil
+        thumbs_down
+    end
+end
+
+post('/thumbs_down') do
+    if session[:id] != nil
+        redirect('/')
+    else
+        redirect('/rating_error')
+    end
+end
+
+get('/rating_error') do
+    slim(:rating_error)
+end

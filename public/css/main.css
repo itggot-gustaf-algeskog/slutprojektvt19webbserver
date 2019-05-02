@@ -135,3 +135,15 @@ header .search_bar{
     color: black;
     font-size: 20px;
 }
+
+.thumbs{
+    grid-column: 1/2;
+    grid-row: 6/7;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    display: grid;
+}
+
+.thumbs h3{
+    grid-column: 1/3;
+}
