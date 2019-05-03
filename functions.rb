@@ -124,5 +124,14 @@ def get_comments
     db = SQLite3::Database.new('db/shop.db')
     db.results_as_hash = true
 
-    session[:comments] = db.execute("SELECT Comment,Commenter,Productid,Userid FROM comments WHERE Productid = (?)", session[:produktid])
+    session[:comments] = db.execute("SELECT Comment,Commenter,Productid,Userid,Commentid FROM comments WHERE Productid = (?)", session[:produktid])
+end
+
+def update_comment
+    db = SQLite3::Database.new("db/shop.db")
+    db.results_as_hash = true
+
+    session[:update_comment] = params["update_comment"]
+
+    db.execute("UPDATE comments SET Comment = (?) WHERE Commentid = (?)",session[:update_comment],session[:comment_id])
 end

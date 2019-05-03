@@ -204,3 +204,19 @@ header .search_bar{
     border-style: solid;
     background-color: white;
 }
+
+.redigera_kommentar{
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+.comment input{
+    width: 50%;
+    box-sizing: border-box;
+    height: 30px;
+}
+
+.delete_comment{
+    grid-column: 1/2;
+    grid-row: 3/4
+}

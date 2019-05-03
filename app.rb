@@ -133,3 +133,17 @@ end
 post('/create_comment') do
     redirect back
 end
+
+get('/edit_comment/:id') do
+    session[:comment_id] = params["id"]
+
+    slim(:edit_comment)
+end
+
+before('/redigera') do
+    update_comment
+end
+
+post('/redigera') do
+    redirect('/')
+end
