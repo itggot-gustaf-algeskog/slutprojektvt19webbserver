@@ -158,3 +158,38 @@ def update_profile
 
     db.execute("UPDATE profiles SET Profiledescription = ?, Item = ?, Interest = ? WHERE Username = ?",session[:profile_description],session[:item],session[:interest],session[:username])
 end
+
+def add_to_cart
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    item_name = db.execute("SELECT Name FROM products WHERE Productid = (?)",session[:produktid])
+    item_price = db.execute("SELECT Price FROM products WHERE Productid = (?)",session[:produktid])
+
+    if session[:id] != nil
+        db.execute("INSERT INTO kundvagnar (Product,Userid,Productid,Price) VALUES (?,?,?,?)",item_name[0][0],session[:id],session[:produktid],item_price[0][0])
+    else
+        session[:add_to_cart_error] = 1
+    end
+end
+
+def get_kundvagn
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    session[:items] = db.execute("SELECT Product,Userid,Productid,Price,Itemid FROM kundvagnar WHERE Userid = (?)",session[:id])
+end
+
+def buy_products
+    db = SQLite3::Database.new("db/shop.db")
+    db.results_as_hash = true
+
+    db.execute("DELETE FROM kundvagnar WHERE Userid = ?", session[:id])
+end
+
+def delete_item
+    db = SQLite3::Database.new("db/shop.db")
+    db.results_as_hash = true
+
+    db.execute("DELETE FROM kundvagnar WHERE Itemid = ?", session[:itemid])
+end

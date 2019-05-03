@@ -1,9 +1,13 @@
 div class="error"
     - if session[:error] == 1
+        - session[:error] = nil
         a href="/register" No username was inputed please try again
     - elsif session[:error] == 2
+        - session[:error] = nil
         a href="/register" This username already exist please try again
     - elsif session[:error] == 3
+        - session[:error] = nil
         a href="/register" No password was inputed please try again
     - elsif session[:error] == 4
+        - session[:error] = nil
         a href="/register" Passwords does not match please try again

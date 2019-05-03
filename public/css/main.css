@@ -246,3 +246,27 @@ header .search_bar{
 .profile a{
     color: black;
 }
+
+.add{
+    grid-column: 4/5;
+    grid-row: 6/7;
+}
+
+.items{
+    grid-column: 2/3;
+    grid-row: 2/5;
+}
+
+.kundvagn_error a{
+    color: black;
+    font-size: 20px;
+}
+
+.buy_products{
+    grid-column: 2/3;
+    grid-row: 5/6;
+}
+
+.kundvagn_produkter{
+    background-color: white;
+}

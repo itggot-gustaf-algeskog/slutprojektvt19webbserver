@@ -132,6 +132,7 @@ end
 
 post('/create_comment') do
     if session[:create_comment_error] == 1
+        session[:create_comment_error] = nil
         redirect('/create_comment_error')
     else
         redirect back
@@ -154,6 +155,7 @@ end
 
 post('/redigera') do
     if session[:update_comment_error] == 1
+        session[:update_comment_error] = nil
         redirect('/update_comment_error')
     else
         redirect('/')
@@ -182,4 +184,62 @@ end
 
 post('/update_profile') do
     redirect('/profile')
+end
+
+before('/add_to_cart') do
+    add_to_cart
+end
+
+post('/add_to_cart') do
+    if session[:add_to_cart_error] == 1
+        session[:add_to_cart_error] = nil
+        redirect('/add_to_cart_error')
+    else
+        redirect back
+    end
+end
+
+get('/add_to_cart_error') do
+    slim(:add_to_cart_error)
+end
+
+before('/kundvagn/:id') do
+    get_kundvagn
+end
+
+get('/kundvagn/:id') do
+    slim(:kundvagn, locals:{ items: session[:items]})
+end
+
+get('/kundvagn') do
+    slim(:kundvagn)
+end
+
+before('/buy_products') do
+    buy_products
+end
+
+post('/buy_products') do
+    redirect back
+end
+
+before('/delete_product') do
+end
+
+post('/delete_product') do
+    redirect back
+end
+
+get('/edit_order/:id') do
+    session[:itemid] = params["id"]
+
+    slim(:edit_order)
+end
+
+before('/delete_item') do
+    delete_item
+end
+
+post('/delete_item') do
+    redirect('/')
 end

@@ -1,0 +1,16 @@
+-if session[:id] != nil
+    div class="items"
+        - items.each do |item|
+            div class="kundvagn_produkter"
+                h3 = item[0]
+                a href="/edit_order/#{item["Itemid"]}"
+                    img src="../img/trash-can1.png"
+    div class="buy_products"
+        form action="/buy_products" method="post"
+            input type="text" placeholder="Name"
+            input type="text" placeholder="Card number"
+            input type="text" placeholder="CSV"
+            input type="submit" value="Buy now"
+-else
+    div class="kundvagn_error"
+        a href="/login" Please login before you use this function
