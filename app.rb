@@ -30,6 +30,9 @@ post('/logga_in') do
     if session[:username] == session[:info][0][0] and BCrypt::Password.new(session[:info][0][1]) == session[:password]
         redirect('/')
     else
+        session[:username] = nil
+        session[:password] = nil
+        session[:id] = nil
         redirect('/no_access')
     end
 end
@@ -108,4 +111,8 @@ post('/logout') do
     session[:password] = nil
     session[:id] = nil
     redirect('/')
+end
+
+get('/no_access') do
+    slim(:no_access)
 end
