@@ -172,3 +172,12 @@ header .search_bar{
 .no_access{
     grid-column: 1/3;
 }
+
+.error{
+    grid-column: 1/3;
+}
+
+.error a{
+    color: black;
+    font-size: 20px;
+}

@@ -42,7 +42,11 @@ before('/registrering') do
 end
 
 post('/registrering') do    
-    redirect('/')
+    if session[:error] != nil
+        redirect('/error')
+    else
+        redirect('/')
+    end
 end
 
 before('/produktsida/:id') do
@@ -115,4 +119,8 @@ end
 
 get('/no_access') do
     slim(:no_access)
+end
+
+get('/error') do
+    slim(:error)
 end

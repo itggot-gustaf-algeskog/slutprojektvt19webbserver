@@ -1,0 +1,9 @@
+div class="error"
+    - if session[:error] == 1
+        a href="/register" No username was inputed please try again
+    - elsif session[:error] == 2
+        a href="/register" This username already exist please try again
+    - elsif session[:error] == 3
+        a href="/register" No password was inputed please try again
+    - elsif session[:error] == 4
+        a href="/register" Passwords does not match please try again

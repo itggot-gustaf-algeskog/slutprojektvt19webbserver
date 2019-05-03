@@ -46,10 +46,15 @@ def registrering
     end
 
     if session[:new_username] == ""
+        session[:error] = 1
     elsif existing_username == session[:new_username]
+        session[:error] = 2
     elsif session[:new_password] == ""
+        session[:error] = 3
     elsif session[:new_password] != session[:confirm_password]
+        session[:error] = 4
     else
+        session[:error] = nil
         hashat_password = BCrypt::Password.create(session[:new_password])
         db.execute("INSERT INTO users (Name,Secret) VALUES (?,?)",session[:new_username],hashat_password)
         db.execute("INSERT INTO profiles (Profiledescription,Item,Interest,Username) VALUES (?,?,?,?)","hej","hej","hej",session[:new_username])
