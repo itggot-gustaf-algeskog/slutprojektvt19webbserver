@@ -238,3 +238,11 @@ header .search_bar{
     color: black;
     font-size: 20px;
 }
+
+.profile{
+    background-color: white;
+}
+
+.profile a{
+    color: black;
+}

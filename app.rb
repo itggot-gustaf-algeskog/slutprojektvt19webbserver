@@ -164,3 +164,22 @@ get('/update_comment_error') do
     slim(:update_comment_error)
 end
 
+before('/delete_comment') do
+    delete_comment
+end
+
+post('/delete_comment') do
+    redirect('/')
+end
+
+get('/edit_profile') do
+    slim(:edit_profile)
+end
+
+before('/update_profile') do
+    update_profile
+end
+
+post('/update_profile') do
+    redirect('/profile')
+end

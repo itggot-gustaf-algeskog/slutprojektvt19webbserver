@@ -140,3 +140,21 @@ def update_comment
         db.execute("UPDATE comments SET Comment = (?) WHERE Commentid = (?)",session[:update_comment],session[:comment_id])
     end
 end
+
+def delete_comment
+    db = SQLite3::Database.new("db/shop.db")
+    db.results_as_hash = true
+
+    db.execute("DELETE FROM comments WHERE Commentid = ?", session[:comment_id])
+end
+
+def update_profile
+    db = SQLite3::Database.new("db/shop.db")
+    db.results_as_hash = true
+
+    session[:profile_description] = params["profile_description"]
+    session[:item] = params["item"]
+    session[:interest] = params["interest"]
+
+    db.execute("UPDATE profiles SET Profiledescription = ?, Item = ?, Interest = ? WHERE Username = ?",session[:profile_description],session[:item],session[:interest],session[:username])
+end
