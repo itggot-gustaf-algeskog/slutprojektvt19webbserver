@@ -105,3 +105,24 @@ def profiles
 
     session[:profiles] = db.execute("SELECT Profiledescription,Item,Interest,Username FROM profiles WHERE Username = (?)",session[:username])
 end
+
+def create_comment
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    session[:comment] = params["comment"]
+
+    if session[:comment] == ""
+    elsif session[:id] == nil
+        redirect('/login')
+    else
+        db.execute("INSERT INTO comments (Comment,Commenter,Productid,Userid) VALUES (?,?,?,?)",session[:comment],session[:username],session[:produktid],session[:id])
+    end
+end
+
+def get_comments
+    db = SQLite3::Database.new('db/shop.db')
+    db.results_as_hash = true
+
+    session[:comments] = db.execute("SELECT Comment,Commenter,Productid,Userid FROM comments WHERE Productid = (?)", session[:produktid])
+end

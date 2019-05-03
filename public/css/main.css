@@ -129,6 +129,7 @@ header .search_bar{
     border-style: solid;
     border-top: none;
     border-left: none;
+    background-color: white;
 }
 
 .startsida_produkter a{
@@ -180,4 +181,26 @@ header .search_bar{
 .error a{
     color: black;
     font-size: 20px;
+}
+
+.comment{
+    grid-column: 1/3;
+    grid-row: 7/8;
+}
+
+.comment input{
+    width: 50%;
+    box-sizing: border-box;
+    height: 30px;
+}
+
+.comments{
+    grid-column: 1/2;
+    grid-row: 8/11;
+}
+
+.produktsida_kommentarer{
+    grid-column: span 1;
+    border-style: solid;
+    background-color: white;
 }

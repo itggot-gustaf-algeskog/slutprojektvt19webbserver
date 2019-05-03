@@ -22,3 +22,19 @@ div class="thumbs"
     form action="/thumbs_down" method="post"
         button type="submit"
             img src="../img/thumbs_down1.png"
+
+div class="comment"
+    form action="/create_comment" method="post"
+        div class="skriva_kommentar_textruta"
+            textarea rows="5" cols="45" placeholder="Skriv kommentar här" name="comment"
+        input type="submit" value="Skapa kommentar!"
+
+-if comments != nil
+    div class="comments"
+        - comments.each do |comment|
+            div class="produktsida_kommentarer"
+                h3 = comment[1]
+                p = comment[0]
+                - if session[:id] == comment[3] and session[:id] != nil
+                    
+                    a href="/edit_post/#{comment["commentid"]}" Edit comment

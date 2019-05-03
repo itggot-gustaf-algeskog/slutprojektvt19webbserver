@@ -52,10 +52,11 @@ end
 before('/produktsida/:id') do
     session[:produktid] = params["id"]
     produktsida
+    get_comments
 end
 
 get('/produktsida/:id') do
-    slim(:produktsida, locals:{ produktsida: session[:produktsida]})
+    slim(:produktsida, locals:{ produktsida: session[:produktsida], comments: session[:comments]})
 end
 
 before('/search') do
@@ -123,4 +124,12 @@ end
 
 get('/error') do
     slim(:error)
+end
+
+before('/create_comment') do
+    create_comment
+end
+
+post('/create_comment') do
+    redirect back
 end
