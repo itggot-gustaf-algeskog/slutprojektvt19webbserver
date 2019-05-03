@@ -113,6 +113,7 @@ def create_comment
     session[:comment] = params["comment"]
 
     if session[:comment] == ""
+        session[:create_comment_error] = 1
     elsif session[:id] == nil
         redirect('/login')
     else
@@ -133,5 +134,9 @@ def update_comment
 
     session[:update_comment] = params["update_comment"]
 
-    db.execute("UPDATE comments SET Comment = (?) WHERE Commentid = (?)",session[:update_comment],session[:comment_id])
+    if session[:update_comment] == ""
+        session[:update_comment_error] = 1
+    else
+        db.execute("UPDATE comments SET Comment = (?) WHERE Commentid = (?)",session[:update_comment],session[:comment_id])
+    end
 end

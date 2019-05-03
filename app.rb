@@ -131,7 +131,15 @@ before('/create_comment') do
 end
 
 post('/create_comment') do
-    redirect back
+    if session[:create_comment_error] == 1
+        redirect('/create_comment_error')
+    else
+        redirect back
+    end
+end
+
+get('/create_comment_error') do
+    slim(:create_comment_error)
 end
 
 get('/edit_comment/:id') do
@@ -145,5 +153,14 @@ before('/redigera') do
 end
 
 post('/redigera') do
-    redirect('/')
+    if session[:update_comment_error] == 1
+        redirect('/update_comment_error')
+    else
+        redirect('/')
+    end
 end
+
+get('/update_comment_error') do
+    slim(:update_comment_error)
+end
+
