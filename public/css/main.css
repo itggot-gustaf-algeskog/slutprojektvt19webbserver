@@ -158,6 +158,7 @@ header .search_bar{
     border-style: solid;
     border-top: none;
     border-left: none;
+    background-color: white;
 }
 
 .search_result_products a{
