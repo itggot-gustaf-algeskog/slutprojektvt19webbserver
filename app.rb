@@ -19,7 +19,6 @@ end
 # Display a Login form
 #
 get('/login') do
-    
     slim(:login)
 end
 
@@ -31,6 +30,9 @@ end
 
 # Attempts login and updates the session
 #
+# @param [String] username, The username that was inputed
+# @param [String] password, The password that was inputed
+# @see Functions#sign_in
 post('/sign_in') do
     info = sign_in(params)
     session[:username] = params["username"]
@@ -56,6 +58,10 @@ end
 
 # Attempts register and creates a user
 #
+# @param [String] new_username, The username that was inputed
+# @param [String] new_password, The password that was inputed
+# @param [String] confirm_password, The confirmation password that was inputed
+# @see Functions#create_user
 post('/create_user') do
     create_user(params)    
     if params["error"] != nil
@@ -76,6 +82,9 @@ end
 
 # Displays a single Product
 #
+# @param [Integer] :id, The Id of the product
+# @see Functions#productpage
+# @see Functions#get_comments
 get('/productpage/:id') do
     session[:productid] = params["id"]
     product_page = productpage(params)
@@ -87,6 +96,8 @@ end
 
 # Attempts finding products and redirects to '/search_result'
 #
+# @param [String] search, The search parameter that was inputed
+# @see Functions#search
 post('/search') do
     session[:search_results] = search(params)
     redirect('/search_result')
@@ -100,6 +111,8 @@ end
 
 # Updates an existing rating and redirects back
 #
+# @param [Integer] productid, The Id of the product
+# @see Functions#thumbs_up
 post('/thumbs_up') do
     if session[:id] != nil
         params["productid"] = session[:productid]
@@ -114,6 +127,8 @@ end
 
 # Updates an existing rating and redirects back
 #
+# @param [Integer] productid, The Id of the product
+# @see Functions#thumbs_down
 post('/thumbs_down') do
     if session[:id] != nil
         params["productid"] = session[:productid]
@@ -134,6 +149,8 @@ end
 
 # Displays a user's profile
 #
+# @param [String] username, The username of the current user
+# @see Functions#profiles
 get('/profile') do
     params["username"] = session[:username]
     profile = profiles(params)
@@ -163,6 +180,11 @@ end
 
 # Creates a new comment and redirects back
 #
+# @param [String] comment, The comment that was inputed
+# @param [String] username, The username of the current user
+# @param [Integer] productid, The Id of the product
+# @param [Integer] id, The Id of the user
+# @see Functions#create_comment
 post('/create_comment') do
     p session[:productid]
     params["username"] = session[:username]
@@ -195,6 +217,9 @@ end
 
 # Updates an existing comment and redirects to '/'
 #
+# @param [String] update_comment, The new comment that was inputed
+# @param [Integer] commentid, The Id of the comment
+# @see Functions#update_comment
 post('/edit_comment') do
     params["commentid"] = session[:comment_id]
     update_comment_error = update_comment(params)
@@ -214,6 +239,8 @@ end
 
 # Deletes an existing comment and redirects to '/'
 #
+# @param [Integer] commentid, The Id of the comment
+# @see Functions#delete_comment
 post('/delete_comment') do
     params["commentid"] = session[:comment_id]
     delete_comment(params)
@@ -228,6 +255,11 @@ end
 
 # Updates an existing profile and redirects to '/articles'
 #
+# @param [String] username, The username of the current user
+# @param [String] profile_description, The new description that was inputed
+# @param [String] item, The bew favorite item that was inputed
+# @param [String] interest, The new interest that was inputed
+# @see Functions#update_profile
 post('/update_profile') do
     params["username"] = session[:username]
     update_profile(params)
@@ -236,6 +268,9 @@ end
 
 # Creates a product display in '/kundvagn'
 #
+# @param [Integer] productid, The Id of the product
+# @param [Integer] id, The Id of the user
+# @see Functions#add_to_cart
 post('/add_to_cart') do
     params["productid"] = session[:productid]
     params["id"] = session[:id]
@@ -256,6 +291,8 @@ end
 
 # Displays a singel user's cart
 #
+# @param [Integer] id, The Id of the user
+# @see Functions#get_cart
 get('/cart/:id') do
     params["id"] = session[:id]
     items = get_cart(params)
@@ -270,6 +307,8 @@ end
 
 # Deletes products from a singel user's cart
 #
+# @param [Integer] id, The Id of the user
+# @see Functions#buy_products
 post('/buy_products') do
     params["id"] = session[:id]
     buy_products(params)
@@ -286,6 +325,8 @@ end
 
 # Deletes a singel product from a singel user's cart
 #
+# @param [Integer] id, The Id of the user
+# @see Functions#delete_item
 post('/delete_item') do
     params["id"] = session[:itemid]
     delete_item(params)
