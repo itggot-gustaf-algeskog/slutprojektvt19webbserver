@@ -6,97 +6,105 @@ enable :sessions
 require_relative 'functions.rb'
 include Functions
 
-before('/') do
-    get_products
-    user_info
-end
-
 # Display Landing Page
 #
 get('/') do
-    slim(:index, locals:{ products: session[:products], user_info: session[:user_info]})
+    params["username"] = session[:username]
+    products = get_products
+    user_information = user_info
+
+    slim(:index, locals:{ products: products, user_info: user_information})
 end
 
 # Display a Login form
 #
 get('/login') do
+    
     slim(:login)
 end
 
 # Display a Register form
 #
 get('/register') do
-    slim(:registrera)
-end
-
-before('/logga_in') do
-    inloggning
+    slim(:register)
 end
 
 # Attempts login and updates the session
 #
-post('/logga_in') do
-    if session[:username] == session[:info][0][0] and BCrypt::Password.new(session[:info][0][1]) == session[:password]
-        redirect('/')
-    else
+post('/sign_in') do
+    info = sign_in(params)
+    session[:username] = params["username"]
+    session[:password] = params["password"]
+
+    if info == []
         session[:username] = nil
         session[:password] = nil
         session[:id] = nil
         redirect('/no_access')
+    else
+        if session[:username] == info[0][0] and BCrypt::Password.new(info[0][1]) == session[:password]
+            session[:id] = info[0][2]
+            redirect('/')
+        else
+            session[:username] = nil
+            session[:password] = nil
+            session[:id] = nil
+            redirect('/no_access')
+        end
     end
-end
-
-before('/registrering') do
-    registrering
 end
 
 # Attempts register and creates a user
 #
-post('/registrering') do    
-    if session[:error] != nil
+post('/create_user') do
+    create_user(params)    
+    if params["error"] != nil
+        if params["error"] == 1
+            session[:error] = "No username was inputed please try again"
+        elsif params["error"] == 2
+            session[:error] = "This username already exist please try again"
+        elsif params["error"] == 3
+            session[:error] = "No password was inputed please try again"
+        elsif params["error"] == 4
+            session[:error] = "Passwords does not match please try again"
+        end
         redirect('/error')
     else
         redirect('/')
     end
 end
 
-before('/produktsida/:id') do
-    session[:produktid] = params["id"]
-    produktsida
-    get_comments
-end
-
 # Displays a single Product
 #
-get('/produktsida/:id') do
-    slim(:produktsida, locals:{ produktsida: session[:produktsida], comments: session[:comments]})
-end
+get('/productpage/:id') do
+    session[:productid] = params["id"]
+    product_page = productpage(params)
+    comments = get_comments(params)
 
-before('/search') do
-    search
+
+    slim(:productpage, locals:{ productpage: product_page, comments: comments})
 end
 
 # Attempts finding products and redirects to '/search_result'
 #
 post('/search') do
+    session[:search_results] = search(params)
     redirect('/search_result')
 end
 
 # Displays search results
 #
 get('/search_result') do
-    slim(:search_result, locals:{ results: session[:results]})
-end
-
-before('/thumbs_up') do
-    if session[:id] != nil
-        thumbs_up
-    end
+    slim(:search_result, locals:{ results: session[:search_results]})
 end
 
 # Updates an existing rating and redirects back
 #
 post('/thumbs_up') do
+    if session[:id] != nil
+        params["productid"] = session[:productid]
+        thumbs_up(params)
+    end
     if session[:id] != nil
         redirect back
     else
@@ -104,15 +112,13 @@ post('/thumbs_up') do
     end
 end
 
-before('/thumbs_down') do
-    if session[:id] != nil
-        thumbs_down
-    end
-end
-
 # Updates an existing rating and redirects back
 #
 post('/thumbs_down') do
+    if session[:id] != nil
+        params["productid"] = session[:productid]
+        thumbs_down(params)
+    end
     if session[:id] != nil
         redirect back
     else
@@ -126,14 +132,12 @@ get('/rating_error') do
     slim(:rating_error)
 end
 
-before('/profile') do
-    profiles
-end
-
 # Displays a user's profile
 #
 get('/profile') do
-    slim(:profile, locals:{ profiles: session[:profiles]})
+    params["username"] = session[:username]
+    profile = profiles(params)
+    slim(:profile, locals:{ profiles: profile})
 end
 
 # Updates session
@@ -157,15 +161,16 @@ get('/error') do
     slim(:error)
 end
 
-before('/create_comment') do
-    create_comment
-end
-
 # Creates a new comment and redirects back
 #
 post('/create_comment') do
-    if session[:create_comment_error] == 1
-        session[:create_comment_error] = nil
+    p session[:productid]
+    params["username"] = session[:username]
+    params["productid"] = session[:productid]
+    params["id"] = session[:id]
+    create_comment_error = create_comment(params)
+    if create_comment_error == 1
+        create_comment_error = nil
         redirect('/create_comment_error')
     elsif session[:id] == nil
         redirect('/login')
@@ -188,15 +193,13 @@ get('/edit_comment/:id') do
     slim(:edit_comment)
 end
 
-before('/redigera') do
-    update_comment
-end
-
 # Updates an existing comment and redirects to '/'
 #
-post('/redigera') do
-    if session[:update_comment_error] == 1
-        session[:update_comment_error] = nil
+post('/edit_comment') do
+    params["commentid"] = session[:comment_id]
+    update_comment_error = update_comment(params)
+    if update_comment_error == 1
+        update_comment_error = nil
         redirect('/update_comment_error')
     else
         redirect('/')
@@ -209,13 +212,11 @@ get('/update_comment_error') do
     slim(:update_comment_error)
 end
 
-before('/delete_comment') do
-    delete_comment
-end
-
 # Deletes an existing comment and redirects to '/'
 #
 post('/delete_comment') do
+    params["commentid"] = session[:comment_id]
+    delete_comment(params)
     redirect('/')
 end
 
@@ -225,25 +226,22 @@ get('/edit_profile') do
     slim(:edit_profile)
 end
 
-before('/update_profile') do
-    update_profile
-end
-
 # Updates an existing profile and redirects to '/articles'
 #
 post('/update_profile') do
+    params["username"] = session[:username]
+    update_profile(params)
     redirect('/profile')
-end
-
-before('/add_to_cart') do
-    add_to_cart
 end
 
 # Creates a product display in '/kundvagn'
 #
 post('/add_to_cart') do
-    if session[:add_to_cart_error] == 1
-        session[:add_to_cart_error] = nil
+    params["productid"] = session[:productid]
+    params["id"] = session[:id]
+    add_to_cart_error = add_to_cart(params)
+    if add_to_cart_error == 1
+        add_to_cart_error = nil
         redirect('/add_to_cart_error')
     else
         redirect back
@@ -256,29 +254,25 @@ get('/add_to_cart_error') do
     slim(:add_to_cart_error)
 end
 
-before('/kundvagn/:id') do
-    get_kundvagn
-end
-
 # Displays a singel user's cart
 #
-get('/kundvagn/:id') do
-    slim(:kundvagn, locals:{ items: session[:items]})
+get('/cart/:id') do
+    params["id"] = session[:id]
+    items = get_cart(params)
+    slim(:cart, locals:{ items: items})
 end
 
 # Displays cart for non logged in users
 #
-get('/kundvagn') do
-    slim(:kundvagn)
-end
-
-before('/buy_products') do
-    buy_products
+get('/cart') do
+    slim(:cart)
 end
 
 # Deletes products from a singel user's cart
 #
 post('/buy_products') do
+    params["id"] = session[:id]
+    buy_products(params)
     redirect back
 end
 
@@ -290,12 +284,10 @@ get('/edit_order/:id') do
     slim(:edit_order)
 end
 
-before('/delete_item') do
-    delete_item
-end
-
 # Deletes a singel product from a singel user's cart
 #
 post('/delete_item') do
+    params["id"] = session[:itemid]
+    delete_item(params)
     redirect('/')
 end
